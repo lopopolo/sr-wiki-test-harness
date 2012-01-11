@@ -49,41 +49,45 @@ module Harness
       File.open dump do |f|
         in_page = false
         current_page = ""
-        page_counter = 0
         while line = f.gets
+          # short circuit
+          next if !in_page && !(line =~ /page/)
           if line =~ /<page>/
             in_page = true
           elsif line =~ /<\/page>/
             in_page = false
             current_page += line
-            parse_page current_page
+            parse_page current_page, @page_counter
             current_page = ""
+            @page_counter += 1
           end
           current_page += line if in_page
         end
       end
     end
 
-    def parse_page xml
+    def parse_page xml, page_count
       page = Nokogiri::XML xml
       title = page.at_xpath("//title").content
       id = page.at_xpath("//id").content.to_i
-      @pages[@page_counter] = { id: id, title: title, num_revisions: 0 }
+      @pages[page_count] = { id: id, title: title, num_revisions: 0 }
       revs = page.xpath("//revision")
       revs.each do |rev|
-        revision_id = rev.at_xpath("//id").content.to_i
-        fulltext = rev.at_xpath("//text").content
-        # encode the fulltext to save space
-        fulltext = Base64::encode64(fulltext)
-        # deflate to save more space
-        fulltext = Zlib::Deflate.deflate(fulltext)
-        @revisions[@revision_counter] = { page_id: id, rev_id: revision_id,
+        current_rev = @revision_counter
+        Thread.new do
+          revision_id = rev.at_xpath("//id").content.to_i
+          fulltext = rev.at_xpath("//text").content
+          # encode the fulltext to save space
+          fulltext = Base64::encode64(fulltext)
+          # deflate to save more space
+          fulltext = Zlib::Deflate.deflate(fulltext)
+          @revisions[current_rev] = { page_id: id, rev_id: revision_id,
                                           fulltext: fulltext, length: rev.at_xpath("//text")["bytes"].to_i }
-        @pages[@page_counter][:num_revisions] += 1
+        end
         @revision_counter += 1
+        @pages[page_count][:num_revisions] += 1
       end
-      puts @pages[@page_counter].inspect if @verbose
-      @page_counter += 1
+      puts @pages[page_count].inspect if @verbose
     end
   end
 end
