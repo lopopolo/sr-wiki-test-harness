@@ -5,6 +5,8 @@ require "yaml"
 require "zlib"
 
 module Harness
+  # this class parses the fields we care about out of the wiki dump
+  # and saves the munged data to disk as a yaml doc.
   class Parser
     attr_accessor :pages, :revisions # both keyed by page id
     attr_accessor :verbose
