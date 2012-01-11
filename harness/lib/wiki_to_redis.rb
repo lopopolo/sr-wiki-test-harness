@@ -1,6 +1,8 @@
+require "base64"
 require "nokogiri"
 require "redis"
 require "yaml"
+require "zlib"
 
 module Harness
   class Parser
@@ -69,6 +71,10 @@ module Harness
       revs.each do |rev|
         revision_id = rev.at_xpath("//id").content.to_i
         fulltext = rev.at_xpath("//text").content
+        # encode the fulltext to save space
+        fulltext = Base64::encode64(fulltext)
+        # deflate to save more space
+        fulltext = Zlib::Deflate.deflate(fulltext)
         @revisions[@revision_counter] = { page_id: id, rev_id: revision_id,
                                           fulltext: fulltext, length: rev.at_xpath("//text")["bytes"].to_i }
         @pages[@page_counter][:num_revisions] += 1
