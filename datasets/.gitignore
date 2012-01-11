@@ -1,3 +1,7 @@
 # the uncompressed datasets
 Wikipedia-Featured_articles.xml
 Wikipedia-Web_2.0.xml
+# the YAMLfied versions
+Wikipedia-Featured_articles.xml.yaml
+Wikipedia-Web_2.0.xml.yaml
+
