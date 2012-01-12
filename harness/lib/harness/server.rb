@@ -11,7 +11,6 @@ module Harness
       params[:seq_list].split(",").map { |seq| seq.to_i }.each do |seq|
         response[seq] = Harness::datastore.get_page_seq seq
       end
-      puts response.inspect
       response.to_json
     end
 
@@ -23,6 +22,11 @@ module Harness
       end
       response.to_json
     end
+
+    get "/num_revs" do
+      { num_revs: Harness::datastore.get_num_revs }.to_json
+    end
+
 
     get %r{/(index)?} do
       "This server is a test harness for sr.<br/>" +

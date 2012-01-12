@@ -22,6 +22,10 @@ module Harness
     def get_rev_seq seq
       @data[:revisions][seq]
     end
+
+    def get_num_revs
+      @data[:revisions].keys.max
+    end
   end
 end
 
