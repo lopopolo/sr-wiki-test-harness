@@ -10,8 +10,8 @@ module Harness
     attr_accessor :pages, :revisions # both keyed by page id
     attr_accessor :verbose
     attr_accessor :page_counter, :revision_counter
-    def initialize dumps, verbose = false
-      @xml_files = dumps # filenames of xml dumps
+    def initialize dump, verbose = false
+      @xml_files = dump.to_a # filenames of xml dumps
       @verbose = verbose
       @pages = Hash.new
       @revisions = Hash.new
@@ -89,13 +89,5 @@ module Harness
       puts @pages[page_count].inspect if @verbose
     end
   end
-end
-
-if __FILE__ == $0
-  start = Time.now
-  h = Harness::Parser.new [File.expand_path("~/repos/sr-wiki-test-harness/datasets/Wikipedia-Featured_articles.xml")], true
-  h.parse_all
-  finish = Time.now
-  puts "Parsing took #{finish - start}"
 end
 
