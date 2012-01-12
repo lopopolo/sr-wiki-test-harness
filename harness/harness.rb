@@ -1,7 +1,5 @@
 #!/usr/bin/env ruby
 
-require "trollop"
-
 # setup load path
 $:.push File.join(File.dirname(__FILE__), "lib")
 
@@ -11,6 +9,7 @@ require "harness/server"
 require "harness/version"
 
 if __FILE__ == $0
+  require "trollop"
   opts = Trollop::options do
     opt :port, "Port to run sinatra on", default: 7777
     opt :dataset, "/path/to/dataset.yaml or /path/to/wikidump.xml", type: String

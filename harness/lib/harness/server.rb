@@ -2,7 +2,7 @@ require "json"
 require "sinatra/base"
 require "thin"
 
-require "datastore"
+require "harness/datastore"
 
 module Harness
   class Server < Sinatra::Base
