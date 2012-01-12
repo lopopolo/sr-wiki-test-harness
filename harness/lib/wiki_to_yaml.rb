@@ -1,6 +1,5 @@
 require "base64"
 require "nokogiri"
-require "redis"
 require "yaml"
 require "zlib"
 

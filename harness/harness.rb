@@ -7,7 +7,7 @@ $:.push File.join(File.dirname(__FILE__), "lib")
 
 require "datastore"
 require "server"
-require "wiki_to_redis"
+require "wiki_to_yaml"
 
 opts = Trollop::options do
   opt :port, "Port to run sinatra on", default: 7777
