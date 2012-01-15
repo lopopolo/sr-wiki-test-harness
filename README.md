@@ -1,11 +1,8 @@
 Purpose
 =======
-This test harness is meant to simulate an API and serve as a test Sr::Cheddar
-source.
+This test harness is meant to simulate an API and serve as a test
+source for an sr cluster.
 
-Design
-======
-1. Parse a wikipedia xml file into Redis
-2. Run a Sinatra server in front of Redis
-3. Be as fast as possible, with configurable delay.
+See [http://wiki.hyperbo.la/sr-test-cases](http://wiki.hyperbo.la/sr-test-cases)
+for more information.
 
